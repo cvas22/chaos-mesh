@@ -102,6 +102,8 @@ const (
 )
 
 // NetworkChaosSpec defines the desired state of NetworkChaos
+// +kubebuilder:validation:XValidation:rule="self.action == 'partition' || !has(self.direction) || !(self.direction in ['from', 'both']) || !has(self.externalTargets)",message="external targets cannot be used with `from` and `both` direction in netem action yet"
+// +kubebuilder:validation:XValidation:rule="self.action == 'partition' || !has(self.direction) || !(self.direction in ['from', 'both']) || has(self.target)",message="`from` and `both` direction cannot be used when targets is empty in netem action"
 type NetworkChaosSpec struct {
 	PodSelector `json:",inline"`
 
@@ -198,6 +200,7 @@ type CorruptSpec struct {
 // BandwidthSpec defines detail of bandwidth limit.
 type BandwidthSpec struct {
 	// Rate is the speed knob. Allows bit, kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means bytes per second.
+	// +kubebuilder:validation:Pattern="^[\\t\\n\\v\\f\\r\\x{85}\\p{Z}]*[0-9]+[\\t\\n\\v\\f\\r\\x{85}\\p{Z}]*[kK\\x{212A}mMgGtT]?[bB](?:[iI\\x{130}][tT]|[pP][sS])[\\t\\n\\v\\f\\r\\x{85}\\p{Z}]*$"
 	Rate string `json:"rate" webhook:"Rate"`
 	// Limit is the number of bytes that can be queued waiting for tokens to become available.
 	// +kubebuilder:validation:Minimum=1
@@ -232,6 +235,7 @@ type ReorderSpec struct {
 // RateSpec defines details of rate limit.
 type RateSpec struct {
 	// Rate is the speed knob. Allows bit, kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means bytes per second.
+	// +kubebuilder:validation:Pattern="^[\\t\\n\\v\\f\\r\\x{85}\\p{Z}]*[0-9]+[\\t\\n\\v\\f\\r\\x{85}\\p{Z}]*[kK\\x{212A}mMgGtT]?[bB](?:[iI\\x{130}][tT]|[pP][sS])[\\t\\n\\v\\f\\r\\x{85}\\p{Z}]*$"
 	Rate string `json:"rate" webhook:"Rate"`
 }
 

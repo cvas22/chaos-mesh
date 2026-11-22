@@ -67,6 +67,8 @@ func (in *Rate) Validate(_ any, path *field.Path) field.ErrorList {
 	return allErrs
 }
 
+// isValidRateUnit matches the rate pattern in the CRD schema, except that the
+// pattern can't reject values that overflow uint64, so keep the two in sync.
 func isValidRateUnit(nu string) (bool, error) {
 	// normalize input
 	s := strings.ToLower(strings.TrimSpace(nu))

@@ -172,6 +172,7 @@ spec:
                           description: Rate is the speed knob. Allows bit, kbit, mbit,
                             gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                             bytes per second.
+                          pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                           type: string
                       required:
                       - buffer
@@ -249,6 +250,7 @@ spec:
                           description: Rate is the speed knob. Allows bit, kbit, mbit,
                             gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                             bytes per second.
+                          pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                           type: string
                       required:
                       - rate

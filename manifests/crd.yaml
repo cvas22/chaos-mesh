@@ -2772,6 +2772,7 @@ spec:
                     description: Rate is the speed knob. Allows bit, kbit, mbit, gbit,
                       tbit, bps, kbps, mbps, gbps, tbps unit. bps means bytes per
                       second.
+                    pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                     type: string
                 required:
                 - buffer
@@ -2883,6 +2884,7 @@ spec:
                     description: Rate is the speed knob. Allows bit, kbit, mbit, gbit,
                       tbit, bps, kbps, mbps, gbps, tbps unit. bps means bytes per
                       second.
+                    pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                     type: string
                 required:
                 - rate
@@ -3125,6 +3127,15 @@ spec:
             - mode
             - selector
             type: object
+            x-kubernetes-validations:
+            - message: external targets cannot be used with `from` and `both` direction
+                in netem action yet
+              rule: self.action == 'partition' || !has(self.direction) || !(self.direction
+                in ['from', 'both']) || !has(self.externalTargets)
+            - message: '`from` and `both` direction cannot be used when targets is
+                empty in netem action'
+              rule: self.action == 'partition' || !has(self.direction) || !(self.direction
+                in ['from', 'both']) || has(self.target)
           status:
             description: Most recently observed status of the chaos experiment about
               pods
@@ -5317,6 +5328,7 @@ spec:
                           description: Rate is the speed knob. Allows bit, kbit, mbit,
                             gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                             bytes per second.
+                          pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                           type: string
                       required:
                       - buffer
@@ -5394,6 +5406,7 @@ spec:
                           description: Rate is the speed knob. Allows bit, kbit, mbit,
                             gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                             bytes per second.
+                          pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                           type: string
                       required:
                       - rate
@@ -7091,6 +7104,7 @@ spec:
                         description: Rate is the speed knob. Allows bit, kbit, mbit,
                           gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                           bytes per second.
+                        pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                         type: string
                     required:
                     - buffer
@@ -7203,6 +7217,7 @@ spec:
                         description: Rate is the speed knob. Allows bit, kbit, mbit,
                           gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                           bytes per second.
+                        pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                         type: string
                     required:
                     - rate
@@ -7445,6 +7460,15 @@ spec:
                 - mode
                 - selector
                 type: object
+                x-kubernetes-validations:
+                - message: external targets cannot be used with `from` and `both`
+                    direction in netem action yet
+                  rule: self.action == 'partition' || !has(self.direction) || !(self.direction
+                    in ['from', 'both']) || !has(self.externalTargets)
+                - message: '`from` and `both` direction cannot be used when targets
+                    is empty in netem action'
+                  rule: self.action == 'partition' || !has(self.direction) || !(self.direction
+                    in ['from', 'both']) || has(self.target)
               physicalmachineChaos:
                 description: PhysicalMachineChaosSpec defines the desired state of
                   PhysicalMachineChaos
@@ -10561,6 +10585,7 @@ spec:
                                   description: Rate is the speed knob. Allows bit,
                                     kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps,
                                     tbps unit. bps means bytes per second.
+                                  pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                   type: string
                               required:
                               - buffer
@@ -10680,6 +10705,7 @@ spec:
                                   description: Rate is the speed knob. Allows bit,
                                     kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps,
                                     tbps unit. bps means bytes per second.
+                                  pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                   type: string
                               required:
                               - rate
@@ -10922,6 +10948,15 @@ spec:
                           - mode
                           - selector
                           type: object
+                          x-kubernetes-validations:
+                          - message: external targets cannot be used with `from` and
+                              `both` direction in netem action yet
+                            rule: self.action == 'partition' || !has(self.direction)
+                              || !(self.direction in ['from', 'both']) || !has(self.externalTargets)
+                          - message: '`from` and `both` direction cannot be used when
+                              targets is empty in netem action'
+                            rule: self.action == 'partition' || !has(self.direction)
+                              || !(self.direction in ['from', 'both']) || has(self.target)
                         physicalmachineChaos:
                           description: PhysicalMachineChaosSpec defines the desired
                             state of PhysicalMachineChaos
@@ -13679,6 +13714,7 @@ spec:
                                       description: Rate is the speed knob. Allows
                                         bit, kbit, mbit, gbit, tbit, bps, kbps, mbps,
                                         gbps, tbps unit. bps means bytes per second.
+                                      pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                       type: string
                                   required:
                                   - buffer
@@ -13799,6 +13835,7 @@ spec:
                                       description: Rate is the speed knob. Allows
                                         bit, kbit, mbit, gbit, tbit, bps, kbps, mbps,
                                         gbps, tbps unit. bps means bytes per second.
+                                      pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                       type: string
                                   required:
                                   - rate
@@ -14041,6 +14078,15 @@ spec:
                               - mode
                               - selector
                               type: object
+                              x-kubernetes-validations:
+                              - message: external targets cannot be used with `from`
+                                  and `both` direction in netem action yet
+                                rule: self.action == 'partition' || !has(self.direction)
+                                  || !(self.direction in ['from', 'both']) || !has(self.externalTargets)
+                              - message: '`from` and `both` direction cannot be used
+                                  when targets is empty in netem action'
+                                rule: self.action == 'partition' || !has(self.direction)
+                                  || !(self.direction in ['from', 'both']) || has(self.target)
                             physicalmachineChaos:
                               description: PhysicalMachineChaosSpec defines the desired
                                 state of PhysicalMachineChaos
@@ -22364,6 +22410,7 @@ spec:
                         description: Rate is the speed knob. Allows bit, kbit, mbit,
                           gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                           bytes per second.
+                        pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                         type: string
                     required:
                     - buffer
@@ -22476,6 +22523,7 @@ spec:
                         description: Rate is the speed knob. Allows bit, kbit, mbit,
                           gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means
                           bytes per second.
+                        pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                         type: string
                     required:
                     - rate
@@ -22718,6 +22766,15 @@ spec:
                 - mode
                 - selector
                 type: object
+                x-kubernetes-validations:
+                - message: external targets cannot be used with `from` and `both`
+                    direction in netem action yet
+                  rule: self.action == 'partition' || !has(self.direction) || !(self.direction
+                    in ['from', 'both']) || !has(self.externalTargets)
+                - message: '`from` and `both` direction cannot be used when targets
+                    is empty in netem action'
+                  rule: self.action == 'partition' || !has(self.direction) || !(self.direction
+                    in ['from', 'both']) || has(self.target)
               physicalmachineChaos:
                 description: PhysicalMachineChaosSpec defines the desired state of
                   PhysicalMachineChaos
@@ -25412,6 +25469,7 @@ spec:
                             description: Rate is the speed knob. Allows bit, kbit,
                               mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit.
                               bps means bytes per second.
+                            pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                             type: string
                         required:
                         - buffer
@@ -25527,6 +25585,7 @@ spec:
                             description: Rate is the speed knob. Allows bit, kbit,
                               mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit.
                               bps means bytes per second.
+                            pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                             type: string
                         required:
                         - rate
@@ -25769,6 +25828,15 @@ spec:
                     - mode
                     - selector
                     type: object
+                    x-kubernetes-validations:
+                    - message: external targets cannot be used with `from` and `both`
+                        direction in netem action yet
+                      rule: self.action == 'partition' || !has(self.direction) ||
+                        !(self.direction in ['from', 'both']) || !has(self.externalTargets)
+                    - message: '`from` and `both` direction cannot be used when targets
+                        is empty in netem action'
+                      rule: self.action == 'partition' || !has(self.direction) ||
+                        !(self.direction in ['from', 'both']) || has(self.target)
                   physicalmachineChaos:
                     description: PhysicalMachineChaosSpec defines the desired state
                       of PhysicalMachineChaos
@@ -28911,6 +28979,7 @@ spec:
                                       description: Rate is the speed knob. Allows
                                         bit, kbit, mbit, gbit, tbit, bps, kbps, mbps,
                                         gbps, tbps unit. bps means bytes per second.
+                                      pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                       type: string
                                   required:
                                   - buffer
@@ -29031,6 +29100,7 @@ spec:
                                       description: Rate is the speed knob. Allows
                                         bit, kbit, mbit, gbit, tbit, bps, kbps, mbps,
                                         gbps, tbps unit. bps means bytes per second.
+                                      pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                       type: string
                                   required:
                                   - rate
@@ -29273,6 +29343,15 @@ spec:
                               - mode
                               - selector
                               type: object
+                              x-kubernetes-validations:
+                              - message: external targets cannot be used with `from`
+                                  and `both` direction in netem action yet
+                                rule: self.action == 'partition' || !has(self.direction)
+                                  || !(self.direction in ['from', 'both']) || !has(self.externalTargets)
+                              - message: '`from` and `both` direction cannot be used
+                                  when targets is empty in netem action'
+                                rule: self.action == 'partition' || !has(self.direction)
+                                  || !(self.direction in ['from', 'both']) || has(self.target)
                             physicalmachineChaos:
                               description: PhysicalMachineChaosSpec defines the desired
                                 state of PhysicalMachineChaos
@@ -32068,6 +32147,7 @@ spec:
                                             bit, kbit, mbit, gbit, tbit, bps, kbps,
                                             mbps, gbps, tbps unit. bps means bytes
                                             per second.
+                                          pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                           type: string
                                       required:
                                       - buffer
@@ -32190,6 +32270,7 @@ spec:
                                             bit, kbit, mbit, gbit, tbit, bps, kbps,
                                             mbps, gbps, tbps unit. bps means bytes
                                             per second.
+                                          pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                           type: string
                                       required:
                                       - rate
@@ -32435,6 +32516,18 @@ spec:
                                   - mode
                                   - selector
                                   type: object
+                                  x-kubernetes-validations:
+                                  - message: external targets cannot be used with
+                                      `from` and `both` direction in netem action
+                                      yet
+                                    rule: self.action == 'partition' || !has(self.direction)
+                                      || !(self.direction in ['from', 'both']) ||
+                                      !has(self.externalTargets)
+                                  - message: '`from` and `both` direction cannot be
+                                      used when targets is empty in netem action'
+                                    rule: self.action == 'partition' || !has(self.direction)
+                                      || !(self.direction in ['from', 'both']) ||
+                                      has(self.target)
                                 physicalmachineChaos:
                                   description: PhysicalMachineChaosSpec defines the
                                     desired state of PhysicalMachineChaos
@@ -44185,6 +44278,7 @@ spec:
                               description: Rate is the speed knob. Allows bit, kbit,
                                 mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit.
                                 bps means bytes per second.
+                              pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                               type: string
                           required:
                           - buffer
@@ -44302,6 +44396,7 @@ spec:
                               description: Rate is the speed knob. Allows bit, kbit,
                                 mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit.
                                 bps means bytes per second.
+                              pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                               type: string
                           required:
                           - rate
@@ -44544,6 +44639,15 @@ spec:
                       - mode
                       - selector
                       type: object
+                      x-kubernetes-validations:
+                      - message: external targets cannot be used with `from` and `both`
+                          direction in netem action yet
+                        rule: self.action == 'partition' || !has(self.direction) ||
+                          !(self.direction in ['from', 'both']) || !has(self.externalTargets)
+                      - message: '`from` and `both` direction cannot be used when
+                          targets is empty in netem action'
+                        rule: self.action == 'partition' || !has(self.direction) ||
+                          !(self.direction in ['from', 'both']) || has(self.target)
                     physicalmachineChaos:
                       description: PhysicalMachineChaosSpec defines the desired state
                         of PhysicalMachineChaos
@@ -47281,6 +47385,7 @@ spec:
                                   description: Rate is the speed knob. Allows bit,
                                     kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps,
                                     tbps unit. bps means bytes per second.
+                                  pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                   type: string
                               required:
                               - buffer
@@ -47400,6 +47505,7 @@ spec:
                                   description: Rate is the speed knob. Allows bit,
                                     kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps,
                                     tbps unit. bps means bytes per second.
+                                  pattern: ^[\t\n\v\f\r\x{85}\p{Z}]*[0-9]+[\t\n\v\f\r\x{85}\p{Z}]*[kK\x{212A}mMgGtT]?[bB](?:[iI\x{130}][tT]|[pP][sS])[\t\n\v\f\r\x{85}\p{Z}]*$
                                   type: string
                               required:
                               - rate
@@ -47642,6 +47748,15 @@ spec:
                           - mode
                           - selector
                           type: object
+                          x-kubernetes-validations:
+                          - message: external targets cannot be used with `from` and
+                              `both` direction in netem action yet
+                            rule: self.action == 'partition' || !has(self.direction)
+                              || !(self.direction in ['from', 'both']) || !has(self.externalTargets)
+                          - message: '`from` and `both` direction cannot be used when
+                              targets is empty in netem action'
+                            rule: self.action == 'partition' || !has(self.direction)
+                              || !(self.direction in ['from', 'both']) || has(self.target)
                         physicalmachineChaos:
                           description: PhysicalMachineChaosSpec defines the desired
                             state of PhysicalMachineChaos

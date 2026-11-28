@@ -107,10 +107,25 @@ func (in *StatusCode) Validate(_ any, path *field.Path) field.ErrorList {
 	return nil
 }
 
+type HTTPCriteriaExpression string
+
+func (in *HTTPCriteriaExpression) Validate(_ any, path *field.Path) field.ErrorList {
+	if *in == "" {
+		return nil
+	}
+	if _, err := CompileHTTPCriteriaExpression(string(*in)); err != nil {
+		return field.ErrorList{
+			field.Invalid(path, string(*in), fmt.Sprintf("invalid expression: %s", err.Error())),
+		}
+	}
+	return nil
+}
+
 func validateHTTPStatusCode(code int) bool {
 	return code > 0 && code < 1000
 }
 
 func init() {
 	genericwebhook.Register("StatusCode", reflect.PointerTo(reflect.TypeFor[StatusCode]()))
+	genericwebhook.Register("HTTPCriteriaExpression", reflect.PointerTo(reflect.TypeFor[HTTPCriteriaExpression]()))
 }

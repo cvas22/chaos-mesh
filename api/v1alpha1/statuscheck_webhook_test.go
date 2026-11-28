@@ -133,6 +133,60 @@ var _ = Describe("statuscheck_webhook", func() {
 					},
 					expect: "incorrect status code format",
 				},
+				{
+					name: "valid expression",
+					statusCheck: StatusCheck{
+						Spec: StatusCheckSpec{
+							Type: TypeHTTP,
+							EmbedStatusCheck: &EmbedStatusCheck{
+								HTTPStatusCheck: &HTTPStatusCheck{
+									RequestUrl: "http://1.1.1.1",
+									Criteria: HTTPCriteria{
+										StatusCode: "200",
+										Expression: `double(response.data.result[0].value[1]) < 0.15`,
+									},
+								},
+							},
+						},
+					},
+					expect: "",
+				},
+				{
+					name: "expression with syntax error",
+					statusCheck: StatusCheck{
+						Spec: StatusCheckSpec{
+							Type: TypeHTTP,
+							EmbedStatusCheck: &EmbedStatusCheck{
+								HTTPStatusCheck: &HTTPStatusCheck{
+									RequestUrl: "http://1.1.1.1",
+									Criteria: HTTPCriteria{
+										StatusCode: "200",
+										Expression: `response.status ==`,
+									},
+								},
+							},
+						},
+					},
+					expect: "invalid expression",
+				},
+				{
+					name: "expression that is not a bool",
+					statusCheck: StatusCheck{
+						Spec: StatusCheckSpec{
+							Type: TypeHTTP,
+							EmbedStatusCheck: &EmbedStatusCheck{
+								HTTPStatusCheck: &HTTPStatusCheck{
+									RequestUrl: "http://1.1.1.1",
+									Criteria: HTTPCriteria{
+										StatusCode: "200",
+										Expression: `"ok"`,
+									},
+								},
+							},
+						},
+					},
+					expect: "expression must evaluate to a bool",
+				},
 			}
 
 			for _, tc := range tcs {

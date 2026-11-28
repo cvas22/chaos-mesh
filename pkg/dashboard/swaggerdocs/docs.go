@@ -3613,6 +3613,10 @@ const docTemplate = `{
         "github_com_chaos-mesh_chaos-mesh_api_v1alpha1.HTTPCriteria": {
             "type": "object",
             "properties": {
+                "expression": {
+                    "description": "Expression is an optional CEL expression evaluated against the response\nbody, which is decoded as JSON and exposed as ` + "`" + `response` + "`" + `.\nIt must evaluate to a bool, and the check only passes when both the\nstatus code matches and the expression returns true.\nFor example: ` + "`" + `double(response.data.result[0].value[1]) \u003c 0.15` + "`" + `.\n+optional",
+                    "type": "string"
+                },
                 "statusCode": {
                     "description": "StatusCode defines the expected http status code for the request.\nA statusCode string could be a single code (e.g. 200), or\nan inclusive range (e.g. 200-400, both ` + "`" + `200` + "`" + ` and ` + "`" + `400` + "`" + ` are included).",
                     "type": "string"

@@ -17,6 +17,7 @@ package http
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -98,7 +99,34 @@ func validate(logger logr.Logger, criteria v1alpha1.HTTPCriteria, resp response)
 			"statusCode", resp.statusCode)
 		return false, fmt.Sprintf("unexpected status code: %d", resp.statusCode), nil
 	}
+	if criteria.Expression != "" {
+		return validateExpression(logger, criteria.Expression, resp)
+	}
 	return ok, "", nil
+}
+
+func validateExpression(logger logr.Logger, expression string, resp response) (bool, string, error) {
+	program, err := v1alpha1.CompileHTTPCriteriaExpression(expression)
+	if err != nil {
+		return false, fmt.Sprintf("invalid expression: %s", err), nil
+	}
+	var body any
+	if err := json.Unmarshal([]byte(resp.body), &body); err != nil {
+		return false, fmt.Sprintf("decode response body as JSON: %s", err), nil
+	}
+	out, _, err := program.Eval(map[string]any{v1alpha1.HTTPCriteriaResponseVariable: body})
+	if err != nil {
+		return false, fmt.Sprintf("evaluate expression: %s", err), nil
+	}
+	result, ok := out.Value().(bool)
+	if !ok {
+		return false, fmt.Sprintf("expression returned %s, not a bool", out.Type().TypeName()), nil
+	}
+	if !result {
+		logger.Info("validate expression failed", "expression", expression)
+		return false, "expression evaluated to false", nil
+	}
+	return true, "", nil
 }
 
 // validateStatusCode validate whether the result is as expected.

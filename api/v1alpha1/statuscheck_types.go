@@ -201,7 +201,13 @@ type HTTPCriteria struct {
 	// A statusCode string could be a single code (e.g. 200), or
 	// an inclusive range (e.g. 200-400, both `200` and `400` are included).
 	StatusCode string `json:"statusCode" webhook:"StatusCode"`
-	// TODO: support response body
+	// Expression is an optional CEL expression evaluated against the response
+	// body, which is decoded as JSON and exposed as `response`.
+	// It must evaluate to a bool, and the check only passes when both the
+	// status code matches and the expression returns true.
+	// For example: `double(response.data.result[0].value[1]) < 0.15`.
+	// +optional
+	Expression string `json:"expression,omitempty" webhook:"HTTPCriteriaExpression"`
 }
 
 type HTTPRequestMethod string

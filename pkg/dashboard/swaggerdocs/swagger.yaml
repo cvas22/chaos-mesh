@@ -941,6 +941,15 @@ definitions:
     type: object
   github_com_chaos-mesh_chaos-mesh_api_v1alpha1.HTTPCriteria:
     properties:
+      expression:
+        description: |-
+          Expression is an optional CEL expression evaluated against the response
+          body, which is decoded as JSON and exposed as `response`.
+          It must evaluate to a bool, and the check only passes when both the
+          status code matches and the expression returns true.
+          For example: `double(response.data.result[0].value[1]) < 0.15`.
+          +optional
+        type: string
       statusCode:
         description: |-
           StatusCode defines the expected http status code for the request.
